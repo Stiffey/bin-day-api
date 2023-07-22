@@ -8,13 +8,9 @@ import time
 
 from flask_cors import CORS
 
-
-
 app = Flask(__name__)
 app.debug = True
 CORS(app)
-
-
 
 @app.route('/')
 def next_collection():
