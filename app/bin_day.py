@@ -37,8 +37,6 @@ def next_collection():
             next_bin_collection_date = date
 
 
-
-
     next_bin_collection_date_formated = next_bin_collection_date.strftime("%A %d %B")
     
 
@@ -69,8 +67,6 @@ def next_collection():
         'collecting' : next_bin_collection,
         'last_updated' : m_ti
     }
-
-
 
     
     return bin_collection_dict
