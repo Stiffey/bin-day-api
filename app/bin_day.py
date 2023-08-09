@@ -78,3 +78,4 @@ def next_collection():
 def bin_details_json():
     # data = json.dumps()   
     return send_from_directory('.','bin_details.json')
+    # return send_from_directory('.','bin_details.json')
