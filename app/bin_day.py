@@ -32,7 +32,8 @@ def next_collection():
     for dates in collection_dict.keys():
         date = datetime.strptime(dates, '%d/%m/%Y')
         days_to_collection = date - current_date
-        if days_to_collection.days < 7:
+        print(days_to_collection)
+        if days_to_collection.days < 6:
             next_bin_collection = collection_dict[dates]
             next_bin_collection_date = date
 
