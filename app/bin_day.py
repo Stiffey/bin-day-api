@@ -38,35 +38,35 @@ def next_collection():
             next_bin_collection_date = date
 
 
-    next_bin_collection_date_formated = next_bin_collection_date.strftime("%A %d %B")
-    
+            next_bin_collection_date_formated = next_bin_collection_date.strftime("%A %d %B")
+            
 
-    # Define the next collection
-    if 'Refuse Collection Service' in next_bin_collection:
-        next_bin_collection = "black"
-        # img = ['static/img/Refuse Collection Service.png']
-    elif 'Recycling Collection Service' in next_bin_collection and 'Garden Waste Collection Service' not in next_bin_collection:
-        next_bin_collection = "blue"
-        # img = ['static/img/Recycling Collection Service.png']
-    elif 'Garden Waste Collection Service' in next_bin_collection and 'Recycling Collection Service' not in next_bin_collection:
-        next_bin_collection = "brown"
-        # img = ['static/img/Garden Waste Collection Service.png']
-    elif 'Recycling Collection Service' in next_bin_collection and 'Garden Waste Collection Service' in next_bin_collection:
-        next_bin_collection = "blue and brown"
-        # img = ['static/img/Recycling Collection Service.png', 'static/img/Garden Waste Collection Service.png']
-    else:
-        next_bin_collection = "dunno"
+            # Define the next collection
+            if 'Refuse Collection Service' in next_bin_collection:
+                next_bin_collection = "black"
+                # img = ['static/img/Refuse Collection Service.png']
+            elif 'Recycling Collection Service' in next_bin_collection and 'Garden Waste Collection Service' not in next_bin_collection:
+                next_bin_collection = "blue"
+                # img = ['static/img/Recycling Collection Service.png']
+            elif 'Garden Waste Collection Service' in next_bin_collection and 'Recycling Collection Service' not in next_bin_collection:
+                next_bin_collection = "brown"
+                # img = ['static/img/Garden Waste Collection Service.png']
+            elif 'Recycling Collection Service' in next_bin_collection and 'Garden Waste Collection Service' in next_bin_collection:
+                next_bin_collection = "blue and brown"
+                # img = ['static/img/Recycling Collection Service.png', 'static/img/Garden Waste Collection Service.png']
+            else:
+                next_bin_collection = "dunno"
 
-    path = 'app/bin_details.json'
-    ti_m = os.path.getmtime(path)
-    m_ti = time.ctime(ti_m)
+            path = 'app/bin_details.json'
+            ti_m = os.path.getmtime(path)
+            m_ti = time.ctime(ti_m)
 
 
-    bin_collection_dict = {
-        'date' : next_bin_collection_date_formated,
-        'collecting' : next_bin_collection,
-        'last_updated' : m_ti
-    }
+            bin_collection_dict = {
+                'date' : next_bin_collection_date_formated,
+                'collecting' : next_bin_collection,
+                'last_updated' : m_ti
+            }
 
     
     return bin_collection_dict
