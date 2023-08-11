@@ -17,7 +17,7 @@ def next_collection():
 
     # Access content from East Herts website
     p = Path('url.txt')
-    url = p.read_text()
+    # url = p.read_text()
 
     URL_root = request.url_root
 
@@ -30,9 +30,10 @@ def next_collection():
 
     # Look through dates and find closest collection
     for dates in collection_dict.keys():
+        print(dates)
         date = datetime.strptime(dates, '%d/%m/%Y')
         days_to_collection = date - current_date
-        print(days_to_collection)
+        # print(days_to_collection)
         if days_to_collection.days < 6:
             next_bin_collection = collection_dict[dates]
             next_bin_collection_date = date
@@ -79,3 +80,9 @@ def bin_details_json():
     # data = json.dumps()   
     return send_from_directory('.','bin_details.json')
     # return send_from_directory('.','bin_details.json')
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
