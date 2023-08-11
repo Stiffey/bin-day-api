@@ -41,7 +41,6 @@ def next_collection():
     next_bin_collection_date_formated = next_bin_collection_date.strftime("%A %d %B")
     
 
-
     # Define the next collection
     if 'Refuse Collection Service' in next_bin_collection:
         next_bin_collection = "black"
