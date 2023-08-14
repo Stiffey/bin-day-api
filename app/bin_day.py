@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, render_template, send_from_directory, make_response, request
+from flask import Flask, send_from_directory, request
 from pathlib import Path
 import json
 import urllib.request, json
@@ -14,10 +14,6 @@ CORS(app)
 
 @app.route('/')
 def next_collection():
-
-    # Access content from East Herts website
-    p = Path('url.txt')
-    # url = p.read_text()
 
     URL_root = request.url_root
 
