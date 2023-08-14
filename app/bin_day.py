@@ -76,6 +76,12 @@ def next_collection():
 def bin_details_json():
     return send_from_directory('.','bin_details.json')
 
+
+
+@app.route('/about')
+def about():
+    return "This is an about page"
+
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
