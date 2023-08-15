@@ -40,10 +40,7 @@ def next_collection():
                 print("if less than 6")
                 next_bin_collection = collection_dict[dates]
                 next_bin_collection_date = date
-
-
                 next_bin_collection_date_formated = next_bin_collection_date.strftime("%A %d %B")
-                
 
                 # Define the next collection
                 if 'Refuse Collection Service' in next_bin_collection:
@@ -73,7 +70,7 @@ def next_collection():
                 }
 
         return bin_collection_dict
-
+    
 
 @app.route('/bin_details.json')
 def bin_details_json():
