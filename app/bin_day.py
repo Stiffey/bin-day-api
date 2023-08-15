@@ -16,21 +16,28 @@ CORS(app)
 def next_collection():
 
     URL_root = request.url_root
+    print("URL_root")
 
     # Read JSON bin details
     with urllib.request.urlopen(URL_root + '/bin_details.json') as f:
+        print("with")
         collection_dict = json.load(f)
+        print("dictionary loaded")
 
         # Get current date
         current_date = datetime.now()
+        print("current date")
 
         # Look through dates and find closest collection
         for dates in collection_dict.keys():
-            print(dates)
+            print("loop started")
             date = datetime.strptime(dates, '%d/%m/%Y')
+            print("dates")
             days_to_collection = date - current_date
+            print("days to collection")
             # print(days_to_collection)
             if days_to_collection.days < 6:
+                print("if less than 6")
                 next_bin_collection = collection_dict[dates]
                 next_bin_collection_date = date
 
@@ -57,7 +64,7 @@ def next_collection():
                 path = 'app/bin_details.json'
                 ti_m = os.path.getmtime(path)
                 m_ti = time.ctime(ti_m)
-
+                print("Time thing")
 
                 bin_collection_dict = {
                     'date' : next_bin_collection_date_formated,
