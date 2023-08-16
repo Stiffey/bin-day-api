@@ -58,16 +58,16 @@ def next_collection():
                 else:
                     next_bin_collection = "dunno"
 
-                path = 'app/bin_details.json'
-                ti_m = os.path.getmtime(path)
-                m_ti = time.ctime(ti_m)
-                print("Time thing")
+        path = 'app/bin_details.json'
+        ti_m = os.path.getmtime(path)
+        m_ti = time.ctime(ti_m)
+        print("Time thing")
 
-                bin_collection_dict = {
-                    'date' : next_bin_collection_date_formated,
-                    'collecting' : next_bin_collection,
-                    'last_updated' : m_ti
-                }
+        bin_collection_dict = {
+            'date' : next_bin_collection_date_formated,
+            'collecting' : next_bin_collection,
+            'last_updated' : m_ti
+        }
 
         return bin_collection_dict
     
