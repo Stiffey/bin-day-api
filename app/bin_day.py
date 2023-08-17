@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import Flask, send_from_directory, request
-from pathlib import Path
+# from pathlib import Path
 import json
 import urllib.request, json
 import os
@@ -9,7 +9,7 @@ import time
 from flask_cors import CORS
 
 app = Flask(__name__)
-app.debug = True
+# app.debug = True
 CORS(app)
 
 @app.route('/')

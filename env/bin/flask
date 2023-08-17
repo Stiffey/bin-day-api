@@ -1,4 +1,4 @@
-#!/Users/stevendiffey/Coding/webapps/bin-day/env/bin/python3.11
+#!/Users/stevendiffey/Coding/webapps/bin-day/bin-day-api/env/bin/python3.9
 # -*- coding: utf-8 -*-
 import re
 import sys
