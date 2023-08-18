@@ -1,5 +1,5 @@
-import os
-import requests
+# import os
+# import requests
 
 from flask import Flask
 
@@ -7,7 +7,7 @@ from flask import Flask
 app = Flask(__name__, instance_relative_config=True)
 
 if __name__ == "__main__":
-    app.run('0.0.0.0', debug=True, port=8000, ssl_context='adhoc')
+    app.run('0.0.0.0', debug=True, port=8080, ssl_context='adhoc')
 
 
 from .bin_day import app
