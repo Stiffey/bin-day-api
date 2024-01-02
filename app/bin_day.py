@@ -1,10 +1,11 @@
 from datetime import datetime
-from flask import Flask, send_from_directory, request
+from flask import Flask, send_from_directory, request, jsonify
 from pathlib import Path
 import json
 import urllib.request, json
 import os
 import time
+from collections import OrderedDict
 
 from flask_cors import CORS
 
@@ -12,75 +13,69 @@ app = Flask(__name__)
 app.debug = True
 CORS(app)
 
+def get_bin_details(url):
+    with urllib.request.urlopen(url + '/bin_details.json') as f:
+        return json.load(f)
+
+def get_next_collection(collection_dict):
+    current_date = datetime.now()
+    for date_str in collection_dict.keys():
+        date = datetime.strptime(date_str, '%d/%m/%Y')
+        days_to_collection = date - current_date
+        print(days_to_collection.days)
+        if days_to_collection.days < 6 and days_to_collection.days >= 0:
+            return date, collection_dict[date_str]
+    return None, None
+
+def get_bin_type(bin_collection):
+    if 'Refuse Collection Service' in bin_collection:
+        return "black"
+    elif 'Recycling Collection Service' in bin_collection and 'Garden Waste Collection Service' not in bin_collection:
+        return "blue"
+    elif 'Garden Waste Collection Service' in bin_collection and 'Recycling Collection Service' not in bin_collection:
+        return "brown"
+    elif 'Recycling Collection Service' in bin_collection and 'Garden Waste Collection Service' in bin_collection:
+        return "blue and brown"
+    else:
+        return "dunno"
+
 @app.route('/')
 def next_collection():
+    url_root = request.url_root
+    # return url_root
+    collection_dict = get_bin_details(url_root)
+    # return jsonify(collection_dict)
+    next_collection_date, next_bin_collection = get_next_collection(collection_dict)
+    next_bin_collection_type = get_bin_type(next_bin_collection)
+    next_collection_date_formatted = next_collection_date.strftime("%A %d %B")
 
-    URL_root = request.url_root
-    print("URL_root")
+    path = 'app/bin_details.json'
+    modification_time = os.path.getmtime(path)
+    formatted_modification_time = time.ctime(modification_time)
 
-    # Read JSON bin details
-    with urllib.request.urlopen(URL_root + '/bin_details.json') as f:
-        print("with")
-        collection_dict = json.load(f)
-        print("dictionary loaded")
+    bin_collection_dict = {
+        'date' : next_collection_date_formatted,
+        'collecting' : next_bin_collection_type,
+        'last_updated' : formatted_modification_time
+    }
 
-        # Get current date
-        current_date = datetime.now()
-        print("current date")
-
-        # Look through dates and find closest collection
-        for dates in collection_dict.keys():
-            print("loop started")
-            date = datetime.strptime(dates, '%d/%m/%Y')
-            print("dates")
-            days_to_collection = date - current_date
-            print("days to collection")
-            # print(days_to_collection)
-            if days_to_collection.days < 6:
-                print("if less than 6")
-                next_bin_collection = collection_dict[dates]
-                next_bin_collection_date = date
-                next_bin_collection_date_formated = next_bin_collection_date.strftime("%A %d %B")
-
-                # Define the next collection
-                if 'Refuse Collection Service' in next_bin_collection:
-                    next_bin_collection = "black"
-                    # img = ['static/img/Refuse Collection Service.png']
-                elif 'Recycling Collection Service' in next_bin_collection and 'Garden Waste Collection Service' not in next_bin_collection:
-                    next_bin_collection = "blue"
-                    # img = ['static/img/Recycling Collection Service.png']
-                elif 'Garden Waste Collection Service' in next_bin_collection and 'Recycling Collection Service' not in next_bin_collection:
-                    next_bin_collection = "brown"
-                    # img = ['static/img/Garden Waste Collection Service.png']
-                elif 'Recycling Collection Service' in next_bin_collection and 'Garden Waste Collection Service' in next_bin_collection:
-                    next_bin_collection = "blue and brown"
-                    # img = ['static/img/Recycling Collection Service.png', 'static/img/Garden Waste Collection Service.png']
-                else:
-                    next_bin_collection = "dunno"
-
-        path = 'app/bin_details.json'
-        ti_m = os.path.getmtime(path)
-        m_ti = time.ctime(ti_m)
-        print("Time thing")
-
-        bin_collection_dict = {
-            'date' : next_bin_collection_date_formated,
-            'collecting' : next_bin_collection,
-            'last_updated' : m_ti
-        }
-
-        return bin_collection_dict
+    return bin_collection_dict
     
+
+@app.route('/all')
+def bin_details():
+    url_root = request.url_root
+    collection_dict = get_bin_details(url_root)
+    
+    sorted_collection_dict = OrderedDict(sorted(collection_dict.items(), key=lambda t: datetime.strptime(t[0], '%d/%m/%Y')))
+    
+    
+    return sorted_collection_dict
+
 
 @app.route('/bin_details.json')
 def bin_details_json():
     return send_from_directory('.','bin_details.json')
-
-
-
-@app.route('/')
-def about():
-    return "This is an about page"
 
 @app.route('/favicon.ico')
 def favicon():
