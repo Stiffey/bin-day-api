@@ -65,10 +65,27 @@ def next_collection():
 @app.route('/all')
 def bin_details():
     url_root = request.url_root
-    collection_dict = get_bin_details(url_root)
+    bin_details = get_bin_details(url_root)
+    collection_dict = []
+
+    for date in bin_details.keys():
+        date_obj = datetime.strptime(date, "%d/%m/%Y")
+        if date_obj < datetime.now():
+            continue
+        formatted_date = date_obj.strftime("%Y/%m/%d")
+
+        collection_dict.append({
+            'date': formatted_date,
+            'collecting': bin_details[date]
+        })
     
-    sorted_collection_dict = OrderedDict(sorted(collection_dict.items(), key=lambda t: datetime.strptime(t[0], '%d/%m/%Y')))
+    return collection_dict
+    # sorted_collection_dict = OrderedDict(sorted(collection_dict.items(), key=lambda t: datetime.strptime(t[0], '%d/%m/%Y')))
     
+    sorted_collection_dict = []
+
+    for x in collection_dict.keys():
+        sorted_collection_dict.append({'date':x, 'collecting':collection_dict[x]})
     
     return sorted_collection_dict
 
